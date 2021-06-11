@@ -22,7 +22,9 @@ class MyDataset(data.Dataset):
         # change BGR -> RGB 
         img = img[:, :, (2, 1, 0)]
 
+        # change to PIL image
         img = Image.fromarray(img)
+
         img_transformed = self.transform(img, self.phase)
         
         label = int(img_path.split(os.path.sep)[-2])
