@@ -25,8 +25,7 @@ class MyDataset(data.Dataset):
         img = Image.fromarray(img)
         img_transformed = self.transform(img, self.phase)
         
-        label = int(img_path.split(os.path.sep)[-2]) - 1
-        
+        label = int(img_path.split(os.path.sep)[-2])
         return img_transformed, label
 
 

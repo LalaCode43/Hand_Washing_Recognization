@@ -18,10 +18,10 @@ import cv2
 import os
 import json
 import random
-
+from tqdm import tqdm 
 # Change these directories to your own locations
-output_folder = './'
-input_folder = '../merged_handwash_data'
+output_folder = '/media/vas/54D6ABF9D6ABDA0E/Documents and Settings/data'
+input_folder = '/media/vas/54D6ABF9D6ABDA0E/Documents and Settings/DataSets'
 
 # movement 0 is large part of the dataset; use only 20% of all frames
 MOVEMENT_0_PROPORTION = 0.2
@@ -167,7 +167,7 @@ def get_frames(folder):
     print('Processing folder: ' + folder + ' ...')
 
     for subdir, dirs, files in os.walk(os.path.join(input_folder, folder)):
-        for videofile in files:
+        for videofile in tqdm(files):
             if videofile.endswith(".mp4"):
                 N_of_videofiles += 1
 
@@ -273,7 +273,7 @@ def get_frames(folder):
 
 
 def main():
-    random.seed(0)
+    random.seed(4)
 
     for movement in range(TOTAL_MOVEMENTS - 1):
         mk(os.path.join(output_folder, "test", str(movement)))
