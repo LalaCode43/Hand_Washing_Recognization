@@ -122,7 +122,7 @@ def train_model(net, dataloader_dict, criterion, optimizer, scheduler, num_epoch
         }
         logs.append(log_epoch)
         df = pd.DataFrame(logs)
-        df.to_csv("./weights/mobilenet_logs.csv")
+        df.to_csv("../weights/mobilenet_logs.csv")
         torch.save(net.state_dict(), "../weights/mobilenet_" + str(epoch+1) + ".pth")
 
 

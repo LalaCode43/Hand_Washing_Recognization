@@ -21,7 +21,7 @@ def parse_inputs():
         '--weight_dir',
         metavar='W',
         type=str,
-        default='weights/mobilenet_29.pth'
+        default='../weights/mobilenet_12.pth'
     )
     
     parser.add_argument(
@@ -62,7 +62,7 @@ def main(args):
     print(device)
     
     # initialize_model
-    net = initialize_model(model_name, 6, False)
+    net = initialize_model(model_name, 7, False)
     net.to(device)
     
     # load mode weight
@@ -77,13 +77,15 @@ def main(args):
     if file_dir.split('.')[-1] == 'jpg': # if input is image
         # read image
         img = cv2.imread(file_dir)
-        
+        frame = img[:, :, (2, 1, 0)]
+        frame = Image.fromarray(frame)
+    
         transform = ImageTransform(resize, mean, std)
         
         
-        img_transformed = transform(img)
+        img_transformed = transform(frame, 'val')
         img_transformed = img_transformed.unsqueeze_(0)
-        
+        img_transformed = img_transformed.to(device)
 
         output = sm(net(img_transformed))
         print(output)
