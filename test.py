@@ -21,18 +21,18 @@ def test():
     net = models.mobilenet_v2(pretrained=use_pretrained)
 
     # modify fully connected layer for 7 class to classify
-    net.classifier[1] = nn.Linear(in_features=1280, out_features=6)
+    net.classifier[1] = nn.Linear(in_features=1280, out_features=num_classes)
 
     # move network to device
     net = net.to(device)
     torch.backends.cudnn.benchmark = True
-    net = load_model(net, 'weights/mobilenet_29.pth')
+    net = load_model(net, '../weights/mobilenet_28.pth')
     
     # criterion
     criterion = nn.CrossEntropyLoss()
 
     # train processing
-    test_model(net, test_dataloader, criterion, device)
+    test_model(net, num_classes, test_dataloader, criterion, device)
     
 if __name__ == '__main__':
     test()

@@ -51,7 +51,7 @@ def train():
     criterion = nn.CrossEntropyLoss()
 
     # optimizer
-    optimizer = optim.Adam(net.parameters(), lr=0.008)
+    optimizer = optim.Adam(net.parameters(), lr=0.00008)
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[10, 20], gamma=0.1)
 
     # train processing

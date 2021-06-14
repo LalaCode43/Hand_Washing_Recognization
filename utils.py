@@ -126,12 +126,12 @@ def train_model(net, dataloader_dict, criterion, optimizer, scheduler, num_epoch
         torch.save(net.state_dict(), "../weights/mobilenet_" + str(epoch+1) + ".pth")
 
 
-def test_model(net, test_dataloader, criterion, device):
+def test_model(net, num_classes, test_dataloader, criterion, device):
     
     test_data_size = len(test_dataloader.dataset)
     test_acc = 0.0
     test_loss = 0.0
-    cf_matrix = torch.zeros(6, 6)
+    cnf_matrix = np.zeros((num_classes, num_classes))
     for i, (inputs, labels) in tqdm(enumerate(test_dataloader)):
         inputs = inputs.to(device)
         labels = labels.to(device)
@@ -160,12 +160,13 @@ def test_model(net, test_dataloader, criterion, device):
             test_acc += acc.item() * inputs.size(0)
         
         # compute Confusion Matrix
+        # cnf_matrix += metrics.confusion_matrix(y_true=labels.cpu(), y_pred=preds.cpu()) 
         for i in range(preds.size(0)):
-            cf_matrix[int(labels[i].item()), int(preds[i].item())] += 1
+            cnf_matrix[int(labels[i].item()), int(preds[i].item())] += 1
     
             
     # compute mean confusion matrix
-    mean_cf_matrix = cf_matrix / cf_matrix.sum(dim=1, keepdim=True)
+    #mean_cf_matrix = cf_matrix / cf_matrix.sum(dim=1, keepdim=True)
     
     # Find average training loss and training accuracy
     avg_test_acc = test_acc / test_data_size
@@ -174,8 +175,14 @@ def test_model(net, test_dataloader, criterion, device):
     avg_test_loss = test_loss / test_data_size
     
     print('Loss- {:03f}, Accuracy: {:03f}%'.format(avg_test_loss, avg_test_acc*100))
-    print('Confusion table:')
-    print(mean_cf_matrix)
+    print('Confusion matrix:')
+    print(cnf_matrix)
+    plt.figure()
+    class_names = np.arange(len(num_classes))
+    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
+                      title='Normalized confusion matrix')
+
+    plt.show()
     
     
 def load_model(net, model_path):
@@ -185,6 +192,36 @@ def load_model(net, model_path):
         load_weight = torch.load(model_path, map_location={'cuda:0': 'cpu'})
     net.load_state_dict(load_weight)
     return net
+
+
+def plot_confusion_matrix(cm, classes,
+                          normalize=False,
+                          title='Confusion matrix',
+                          cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1, keepdims = True)
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
 
 
 if __name__ == '__main__':

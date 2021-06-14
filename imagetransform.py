@@ -33,6 +33,20 @@ class ImageTransform:
                 transforms.Normalize(mean, std)
             ])
         }
+        # self.data_transform = {
+        #     'train': transforms.Compose([
+        #         transforms.RandomResizedCrop(256, scale=(0.8, 1.0)),
+        #         transforms.RandomRotation(degrees=20),
+        #         transforms.RandomHorizontalFlip(),
+        #         transforms.CenterCrop(size=resize),
+        #         transforms.ToTensor()
+        #     ]),
+        #     'val': transforms.Compose([
+        #         transforms.Resize(256),
+        #         transforms.CenterCrop(size=resize),
+        #         transforms.ToTensor()
+        #     ])
+        # }
     
     def __call__(self, img, phase='train'):
         return self.data_transform[phase](img)
