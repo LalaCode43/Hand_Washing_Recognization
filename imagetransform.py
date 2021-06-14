@@ -6,13 +6,11 @@ class ImageTransform:
     def __init__(self, resize, mean, std):
         # self.data_transform = {
         #     'train': transforms.Compose([
-        #         transforms.ToPILImage(),
-        #         transforms.Resize(256),
+        #         transforms.Resize((256, 256)),
         #         transforms.ToTensor()
         #     ]),
         #     'val': transforms.Compose([
-        #         transforms.ToPILImage(),
-        #         transforms.Resize(256),
+        #         transforms.Resize((256, 256)),
         #         transforms.ToTensor()
         #     ])
         # }

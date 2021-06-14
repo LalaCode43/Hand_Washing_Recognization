@@ -33,7 +33,8 @@ class MyDataset(data.Dataset):
 
 if __name__ == '__main__':
     trainvalset = make_data_path_list(phase='trainval')
-    trainset, valset = data.random_split(trainvalset, (391409, 105890))
+    trainset, valset = data.random_split(trainvalset, (568183, 164328),generator=torch.Generator().manual_seed(4))
+
     
     # list of paths to images of train and val dataset
     train_list = [file for file in trainset]

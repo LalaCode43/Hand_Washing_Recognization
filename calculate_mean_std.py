@@ -6,7 +6,7 @@ from config import *
 
 
 trainvalset = make_data_path_list(phase='trainval')
-trainset, valset = data.random_split(trainvalset, (391409, 105890), generator=torch.Generator().manual_seed(4))
+trainset, valset = data.random_split(trainvalset, (568183, 164328),generator=torch.Generator().manual_seed(4))
 
 # list of paths to images of train and val dataset
 train_list = [file for file in trainset]
@@ -27,7 +27,7 @@ dataloader_dict = {
 mean = 0.
 std = 0.
 nb_samples = 0.
-for phase in ['train', 'val']:
+for phase in ['train']:
     for data, label in tqdm(dataloader_dict[phase]):
         batch_samples = data.size(0)
         data = data.view(batch_samples, data.size(1), -1)
