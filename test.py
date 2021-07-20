@@ -14,19 +14,21 @@ def test():
     
     # device
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    print(device)
+    print('Device: ', device)
 
     # load pretrained model MobileNet_V2
     use_pretrained = False
     net = models.mobilenet_v2(pretrained=use_pretrained)
 
     # modify fully connected layer for 7 class to classify
-    net.classifier[1] = nn.Linear(in_features=1280, out_features=num_classes)
+    in_features = net.classifier[1].in_features
+    net.classifier[1] = nn.Linear(in_features=in_features, out_features=num_classes)
 
     # move network to device
     net = net.to(device)
     torch.backends.cudnn.benchmark = True
-    net = load_model(net, '../weights/mobilenet_28.pth')
+    
+    net = load_model(net, '../weights/mobilenet_15.pth')
     
     # criterion
     criterion = nn.CrossEntropyLoss()

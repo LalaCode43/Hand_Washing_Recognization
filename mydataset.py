@@ -28,6 +28,7 @@ class MyDataset(data.Dataset):
         img_transformed = self.transform(img, self.phase)
         
         label = int(img_path.split(os.path.sep)[-2])
+        
         return img_transformed, label
 
 
@@ -39,16 +40,17 @@ if __name__ == '__main__':
     # list of paths to images of train and val dataset
     train_list = [file for file in trainset]
     val_list = [file for file in valset]
-    idx = 25
+    idx = 110
     img = cv2.imread(train_list[idx])
+    print(img[:, 0:10, 0:10])
     cv2.imshow('test', img)
     cv2.waitKey(0)
     train_dataset = MyDataset(train_list, ImageTransform(resize, mean, std), phase='train')
     img_transformed, label = train_dataset[idx]
     print(img_transformed[:, 0:10, 0:10])
-    # img_transformed = img_transformed.numpy().transpose(1, 2, 0)
-    # img_transformed = np.clip(img_transformed, 0, 1)
-    #
-    # print(label)
-    # cv2.imshow('test', img_transformed*255)
-    # cv2.waitKey(0)
+    img_transformed = img_transformed.numpy().transpose(1, 2, 0)
+    img_transformed = np.clip(img_transformed, 0, 1)
+    
+    print(label)
+    cv2.imshow('test', img_transformed*255)
+    cv2.waitKey(0)

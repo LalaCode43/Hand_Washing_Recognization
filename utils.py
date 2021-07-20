@@ -177,12 +177,13 @@ def test_model(net, num_classes, test_dataloader, criterion, device):
     print('Loss- {:03f}, Accuracy: {:03f}%'.format(avg_test_loss, avg_test_acc*100))
     print('Confusion matrix:')
     print(cnf_matrix)
-    plt.figure()
-    class_names = np.arange(len(num_classes))
-    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
-                      title='Normalized confusion matrix')
+    # fig = plt.figure(figsize=(10, 8))
+    # class_names = np.arange(num_classes)
+    # plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
+    #                   title='Normalized confusion matrix')
+    # plt.imsave('fs_matrix.jpg', fig)
 
-    plt.show()
+    # plt.show()
     
     
 def load_model(net, model_path):
@@ -229,3 +230,4 @@ if __name__ == '__main__':
     testset = make_data_path_list('test')
     print(len(trainvalset))
     print(len(testset))
+    # print(testset[100:120])

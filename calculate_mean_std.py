@@ -16,7 +16,7 @@ train_dataset = MyDataset(file_list=train_list, transform=ImageTransform(1, 1, 1
 val_dataset = MyDataset(file_list=val_list, transform=ImageTransform(1, 1, 1), phase='val')
 
 
-train_dataloader = data.DataLoader(train_dataset,  128, num_workers=1, shuffle=False)
+train_dataloader = data.DataLoader(train_dataset,  2000, num_workers=1, shuffle=False)
 val_dataloader = data.DataLoader(val_dataset,  128, num_workers=1, shuffle=False)
 
 dataloader_dict = {
